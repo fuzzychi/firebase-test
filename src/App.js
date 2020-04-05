@@ -1,25 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import  { db } from './firebase';
 
 function App() {
+
+  const [names, setNames] = useState([]);
+    const collection = db.collection("names");
+    collection.onSnapshot(snapshot =>{
+      const newNames = [];
+      snapshot.forEach(doc =>{
+        const item = {
+          id : doc.id,
+          firstname: doc.data().firstname,
+          lastname: doc.data().lastname
+        }
+        newNames.push(item);
+      })
+      setNames(newNames);
+    })
+  
+  const handleChange = event =>
+  {
+      const id = event.target.id;
+      console.log(id);
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    {
+      names.map(name =>
+        {
+        return (
+        <div><input type="text" id={name.id} value={name.firstname} onChange={handleChange}/></div>
+        )
+        })
+    }
+    </div>  
   );
 }
 
