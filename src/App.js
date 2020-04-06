@@ -1,8 +1,20 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
 import  { db } from './firebase';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+
 
 function App() {
+
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      '& > *': {
+        margin: theme.spacing(1),
+        width: '25ch',
+      },
+    },
+  }));
 
   const [names, setNames] = useState([]);
     useEffect(()=>{
@@ -21,7 +33,6 @@ function App() {
     })
   },[]);
   
-
   const handleChange = event =>
   {
       const newNames = names;
@@ -37,11 +48,12 @@ function App() {
   }
   return (
     <div className="App">
+     
     {
       names.map(name =>
         {
         return (
-        <div><input type="text" id={name.id} value={name.firstname} onChange={handleChange}/></div>
+        <div><TextField label={name.id} id={name.id} value={name.firstname} onChange={handleChange} /></div>
         )
         })
     }
