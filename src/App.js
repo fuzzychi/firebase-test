@@ -18,8 +18,7 @@ function App() {
       '& > *': {
         margin: theme.spacing(1),
         width: '200px',
-        padding: '2px',
-      },
+        padding: '2px',},
     },
   }));
 
