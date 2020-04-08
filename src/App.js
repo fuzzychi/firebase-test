@@ -9,6 +9,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import { CardHeader } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
 
 
 function App() {
@@ -18,7 +19,9 @@ function App() {
       '& > *': {
         margin: theme.spacing(1),
         width: '200px',
-        padding: '2px',},
+        padding: '2px',
+        display: 'flex',
+      },
     },
   }));
 
@@ -76,11 +79,12 @@ function App() {
     <div className="App">
       <Typography variant="h1">Form</Typography>
       <Button variant="contained" onClick={handleAdd}>Add</Button>
-     <form className={classes.root} noValidate autoComplete="off">
+      <Grid container spacing={3}>
     {
       names.map(name =>
         {
         return (
+        <Grid xs={3}>  
         <Card variant="outlined">
         <CardHeader title="Card"/>
         <CardContent>
@@ -88,10 +92,11 @@ function App() {
             <Button onClick={()=>{handleDelete(name.id)}}>Remove</Button>
         </CardContent>
         </Card>
+        </Grid>
         )
         })
     }
-    </form>
+    </Grid>
     </div>  
   );
 }
