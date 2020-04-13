@@ -10,18 +10,24 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import { CardHeader } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 
 
 function App() {
 
   const useStyles = makeStyles((theme) => ({
     root: {
-      '& > *': {
-        margin: theme.spacing(1),
-        width: '200px',
-        padding: '2px',
-        display: 'flex',
-      },
+      padding: 10,
+      flexGrow: 1,
+    },
+    paper: {
+      height: 200,
+      width: 200,
+      marginTop: 15,
+      backgroundColor:'#eee'
+    },
+    control: {
+      padding: theme.spacing(2),
     },
   }));
 
@@ -76,22 +82,21 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className={classes.root}>
       <Typography variant="h1">Form</Typography>
+      <div>
       <Button variant="contained" onClick={handleAdd}>Add</Button>
-      <Grid container spacing={3}>
+      </div>
+      <Grid container xs={12} spacing={2}>
     {
       names.map(name =>
         {
         return (
         <Grid xs={3}>  
-        <Card variant="outlined">
-        <CardHeader title="Card"/>
-        <CardContent>
+        <Paper className={classes.paper}>
             <TextField label="Name" id={name.id} value={name.firstname} onChange={handleChange} />
             <Button onClick={()=>{handleDelete(name.id)}}>Remove</Button>
-        </CardContent>
-        </Card>
+        </Paper>
         </Grid>
         )
         })
