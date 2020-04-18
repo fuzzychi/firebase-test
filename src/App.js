@@ -14,6 +14,10 @@ import Paper from '@material-ui/core/Paper';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import FirstPage from './Components/FirstPage';
+import SecondPage from './Components/SecondPage';
 
 function App() {
 
@@ -33,8 +37,9 @@ function App() {
   }));
 
   const classes = useStyles();
-
   const [names, setNames] = useState([]);
+  const [step, setStep] = useState("1");
+
   useEffect(() => {
     const collection = db.collection("names");
     collection.orderBy('date', 'desc').onSnapshot(snapshot => {
@@ -65,7 +70,11 @@ function App() {
     });
 
   }
-
+  const handleStep = (event) =>
+  {
+      setStep(event.target.id);
+      console.log(event.target.id)
+  }
   const handleAdd = event => {
     const item = {
       firstname: "",
@@ -86,33 +95,26 @@ function App() {
           <h1>Header</h1>
         </Grid>
         <Grid item xs={2} style={{backgroundColor:'#eeee', height:"1000px"}}> 
-        <h1>Sidebar</h1>
-        <h3>Item</h3>
-        {
-            names.map(name => {
-              return (
-              <h5>{name.firstname}</h5>
-              )
-            })
-          }
-
-        <Button variant="contained" onClick={handleAdd}>Add</Button>  
+        <Typography variant="h5">Sub-sections</Typography>
+        <List>
+          <ListItem><a href="#" id="1" onClick={handleStep}>First</a></ListItem>
+          <ListItem><a href="#" id="2" onClick={handleStep}>Second</a></ListItem>
+        </List>      
         </Grid>
         <Grid item xs={10}>
         <h1>Main</h1>
-          {
-            names.map(name => {
-              return (
-                    <Paper style={{padding:10}}>            
-                    <TextField label="Name" id={name.id} value={name.firstname} onChange={handleChange} variant="outlined" />
-                    <Button onClick={() => { handleDelete(name.id) }} style={{ display: 'block', padding: 10, marginTop: 10 }}>Remove</Button>
-                    </Paper>
-                
-              )
-            })
-          }
+        {(function() {
+        switch (step) {
+          case "1":
+            return <FirstPage names={names} handleChange={handleChange} handleDelete={handleDelete} handleAdd={handleAdd}/>;
+          case "2":
+            return <SecondPage names={names} handleChange={handleChange} handleDelete={handleDelete}/>;
+          default:
+            return null;
+        }
+      })()}
+
         </Grid>
-        
     </Grid>
     </div>  
   );
