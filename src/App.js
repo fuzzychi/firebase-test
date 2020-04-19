@@ -62,13 +62,15 @@ function App() {
     const item = names.find(element => element.id === event.target.id);
     item.firstname = event.target.value;
     setNames([...newNames])
+  }
+  const handleUpdate = event =>
+  {
     const doc = db.collection("names").doc(event.target.id)
     doc.update({
       firstname: event.target.value,
     }).then(() => {
       console.log("Updated");
     });
-
   }
   const handleStep = (event) =>
   {
@@ -91,7 +93,7 @@ function App() {
   return (
     <div className={classes.root}>
       <Grid container spacing={2}>
-      <Grid item xs={12} style={{backgroundColor:'blue',color:'white'}}>
+      <Grid item xs={12} style={{backgroundColor:'yellow',color:'black'}}>
           <h1>Header</h1>
         </Grid>
         <Grid item xs={2} style={{backgroundColor:'#eeee', height:"1000px"}}> 
@@ -102,11 +104,11 @@ function App() {
         </List>      
         </Grid>
         <Grid item xs={10}>
-        <h1>Main</h1>
+        <Typography variant="h5">Sub-sections</Typography>
         {(function() {
         switch (step) {
           case "1":
-            return <FirstPage names={names} handleChange={handleChange} handleDelete={handleDelete} handleAdd={handleAdd}/>;
+            return <FirstPage names={names} handleChange={handleChange} handleDelete={handleDelete} handleAdd={handleAdd} handleUpdate={handleUpdate}/>;
           case "2":
             return <SecondPage names={names} handleChange={handleChange} handleDelete={handleDelete}/>;
           default:
