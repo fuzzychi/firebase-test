@@ -18,6 +18,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import FirstPage from './Components/FirstPage';
 import SecondPage from './Components/SecondPage';
+import ThirdPage from './Components/ThirdPage';
 
 function App() {
 
@@ -39,8 +40,13 @@ function App() {
   const classes = useStyles();
   const [names, setNames] = useState([]);
   const [step, setStep] = useState("1");
+  const [vehicle, setVehicle] = useState({});
 
   useEffect(() => {
+    //Load vehicle details
+    //const vehicleCollection = db.collection("vehicle")
+
+    //Load vehicle options
     const collection = db.collection("names");
     collection.orderBy('date', 'desc').onSnapshot(snapshot => {
       const newNames = [];
@@ -101,6 +107,7 @@ function App() {
         <List>
           <ListItem><a href="#" id="1" onClick={handleStep}>First</a></ListItem>
           <ListItem><a href="#" id="2" onClick={handleStep}>Second</a></ListItem>
+          <ListItem><a href="#" id="3" onClick={handleStep}>Third</a></ListItem>          
         </List>      
         </Grid>
         <Grid item xs={10}>
@@ -111,6 +118,8 @@ function App() {
             return <FirstPage names={names} handleChange={handleChange} handleDelete={handleDelete} handleAdd={handleAdd} handleUpdate={handleUpdate}/>;
           case "2":
             return <SecondPage names={names} handleChange={handleChange} handleDelete={handleDelete}/>;
+          case "3":
+              return <ThirdPage names={names} handleChange={handleChange} handleDelete={handleDelete}/>;
           default:
             return null;
         }
