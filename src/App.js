@@ -20,6 +20,7 @@ import FirstPage from './Components/FirstPage';
 import SecondPage from './Components/SecondPage';
 import ThirdPage from './Components/ThirdPage';
 
+
 function App() {
 
   const useStyles = makeStyles((theme) => ({
@@ -40,7 +41,8 @@ function App() {
   const classes = useStyles();
   const [names, setNames] = useState([]);
   const [step, setStep] = useState("1");
-  const [vehicle, setVehicle] = useState({});
+  const [vehicle, setVehicle] = useState("17144");
+  const vehicleList = ["17144", "17122", "18233"]
 
   useEffect(() => {
     //Load vehicle details
@@ -95,12 +97,28 @@ function App() {
   const handleDelete = (props) => {
     db.collection("names").doc(props).delete()
   }
+  const handleSwitch = event =>{
+    setVehicle(event.target.value)
+  }
 
   return (
     <div className={classes.root}>
       <Grid container spacing={2}>
       <Grid item xs={12} style={{backgroundColor:'yellow',color:'black'}}>
           <h1>Header</h1>
+          <InputLabel id="demo-simple-select-label">Vehicle</InputLabel>
+         <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={vehicle}
+          onChange={handleSwitch}
+        >
+          {vehicleList.map(vehicle =>{
+          return(
+            <MenuItem value={vehicle}>{vehicle}</MenuItem>
+          )})}
+
+        </Select>
         </Grid>
         <Grid item xs={2} style={{backgroundColor:'#eeee', height:"1000px"}}> 
         <Typography variant="h5">Sub-sections</Typography>
