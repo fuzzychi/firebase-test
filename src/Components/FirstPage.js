@@ -1,25 +1,22 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 
-function FirstPage({names, handleChange, handleDelete, handleAdd, handleUpdate})
+function FirstPage({vehicleObj, handleDelete})
 {
     return(
         <div>
-        <h3>First</h3>
-        <Button variant="contained" onClick={handleAdd}>Add</Button>  
-        {names.map(name => {
+        <h3>Options</h3>
+        {vehicleObj.options ? vehicleObj.options.map((option,index) => {
         return (
               <Paper style={{padding:10}}>
-              <Typography variant="h5">{name.id}</Typography>             
-              <TextField label="Name" id={name.id} value={name.firstname} onChange={handleChange} onBlur={handleUpdate} variant="outlined" />
-              <Button onClick={() => { handleDelete(name.id) }} style={{ display: 'block', padding: 10, marginTop: 10 }}>Remove</Button>
+              <Typography variant="h5">{option.partno} - {option.description}</Typography>
+              <Button onClick={()=>handleDelete(index)}>Delete</Button>             
               </Paper>
-          
         )
-      })
+      }) : ''
     }
     </div>
     )
