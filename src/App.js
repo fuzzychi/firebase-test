@@ -73,10 +73,21 @@ function App() {
   }
 
   const handleAdd = event => {
+    const gen = rn.generator({
+      min:  0
+    , max:  5
+    , integer: true
+    })
+    const names = ["pork", "steak", "chicken", "banana","eggs","t-shirt"]
+    const gen2 = rn.generator({
+      min:  30000
+    , max:  50000
+    , integer: true
+    })
     const options = vehicleObj.options;
     const updateSet = db.collection("vehicles").doc(vehicle).set({options:[...options, {
-      "description" : "new",
-      "partno" : "32423423"
+      "description" : names[gen()],
+      "partno" : "0"+gen2()
     }]},{merge:true}).then(console.log("Done"))
 }
  
