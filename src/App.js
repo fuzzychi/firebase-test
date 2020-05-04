@@ -17,7 +17,6 @@ import FirstPage from './Components/FirstPage';
 function App() {
 
   const rn = require('random-number');
-
   const useStyles = makeStyles((theme) => ({
     root: {
       padding: 5,
@@ -34,7 +33,6 @@ function App() {
   }));
 
   const classes = useStyles();
-  const [names, setNames] = useState([]);
   const [vehicle, setVehicle] = useState("");
   const [vehicleList, setVehicleList] = useState([]);
   const [vehicleObj, setVehicleObj] = useState("");
@@ -54,38 +52,23 @@ function App() {
         })
         setVehicleList(list);
       })  
-  }, hasChanged);
-
-  const handleChange = event => {
-    const newNames = names;
-    const item = names.find(element => element.id === event.target.id);
-    item.firstname = event.target.value;
-    setNames([...newNames])
-  }
-  const handleUpdate = event =>
-  {
-    const doc = db.collection("names").doc(event.target.id)
-    doc.update({
-      firstname: event.target.value,
-    }).then(() => {
-      console.log("Updated");
-    });
-  }
+  }, [hasChanged]);
 
   const handleAdd = event => {
+    
+    const names = ["pork", "steak", "chicken", "banana","eggs","t-shirt","pudding","cheese","donut"]
     const gen = rn.generator({
       min:  0
-    , max:  5
+    , max:  names.length - 1
     , integer: true
     })
-    const names = ["pork", "steak", "chicken", "banana","eggs","t-shirt"]
     const gen2 = rn.generator({
       min:  30000
     , max:  50000
     , integer: true
     })
     const options = vehicleObj.options;
-    const updateSet = db.collection("vehicles").doc(vehicle).set({options:[...options, {
+    db.collection("vehicles").doc(vehicle).set({options:[...options, {
       "description" : names[gen()],
       "partno" : "0"+gen2()
     }]},{merge:true}).then(console.log("Done"))
@@ -102,7 +85,6 @@ function App() {
     , max:  60000
     , integer: true
     })
-
     const item = {
           unitno : gen(),
           sales : "d. farber",
@@ -123,8 +105,7 @@ function App() {
           if(index !== props){return item}
      })
      console.log(newOptions);
-     db.collection("vehicles").doc(vehicle).set({options:newOptions}).
-     then(console.log("Done"))
+     db.collection("vehicles").doc(vehicle).set({options:newOptions},{merge:true}).then(console.log("Done"))
 
   }
   const handleSwitch = event => {
@@ -132,30 +113,41 @@ function App() {
     db.collection("vehicles").doc(event.target.value).onSnapshot(
       function(doc){
         setVehicleObj(doc.data())})}
+
+  const handleDeleteVeh = event => {
+    if(vehicle){
+    db.collection("vehicles").doc(vehicle).delete().then(console.log("delete"));
+    setVehicle("");
+    setVehicleObj("");
+    }
+  }
+
   return (
     <div className={classes.root}>
       <Grid container spacing={2}>
       <Grid item xs={12} style={{backgroundColor:'yellow',color:'black'}}>
-          <h1>Header</h1>
+          <Typography variant="h1">{vehicleObj ? vehicleObj.unitno : "-"}</Typography>
           <InputLabel id="demo-simple-select-label">Vehicle</InputLabel>
           <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={vehicle}
-          onChange={handleSwitch}
-          >
+          onChange={handleSwitch}>
           {vehicleList.map(vehicle =>{
           return(
             <MenuItem value={vehicle.id}>{vehicle.unit}</MenuItem>
           )})}
         </Select>
-        <Button onClick={handleAdd} style={{ display: 'block', padding: 10, marginTop: 10 }}>New</Button>
+        <Button onClick={handleNew} style={{ display: 'inline', padding: 10, marginTop: 10 }}>New Vehicle</Button>
+        <Button onClick={handleDeleteVeh} style={{ display: 'inline', padding: 10, marginTop: 10 }}>Delete Vehicle</Button>
         </Grid>
         <Grid item xs={2} style={{backgroundColor:'#eeee', height:"1000px"}}> 
-        <Typography variant="h5">Sub-sections</Typography> 
+          <Typography variant="h5">{vehicleObj ? vehicleObj.sales : "-"}</Typography>  
+          <Typography variant="h5">{vehicleObj ? vehicleObj.engineer : "-"}</Typography>  
+          <Typography variant="h5">{vehicleObj ? vehicleObj.type : "-"}</Typography>  
         </Grid>
         <Grid item xs={10}>
-         <FirstPage vehicleObj={vehicleObj} handleDelete={handleDelete}/>
+        <FirstPage vehicleObj={vehicleObj} handleDelete={handleDelete} handleAdd={handleAdd}/>
         </Grid>
     </Grid>
     </div>  
