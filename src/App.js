@@ -13,6 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import FirstPage from './Components/FirstPage';
+import ContentEditable from 'react-contenteditable'
 
 function App() {
 
@@ -142,9 +143,9 @@ function App() {
         <Button onClick={handleDeleteVeh} style={{ display: 'inline', padding: 10, marginTop: 10 }}>Delete Vehicle</Button>
         </Grid>
         <Grid item xs={2} style={{backgroundColor:'#eeee', height:"1000px"}}> 
-          <Typography variant="h5">{vehicleObj ? vehicleObj.sales : "-"}</Typography>  
-          <Typography variant="h5">{vehicleObj ? vehicleObj.engineer : "-"}</Typography>  
-          <Typography variant="h5">{vehicleObj ? vehicleObj.type : "-"}</Typography>  
+          <Typography variant="h5"><ContentEditable className="content-editable" html={vehicleObj ? vehicleObj.sales : "-"}/></Typography>  
+          <Typography variant="h5"><ContentEditable className="content-editable" html={vehicleObj ? vehicleObj.engineer : "-"}/></Typography>  
+          <Typography variant="h5"><ContentEditable className="content-editable" html={vehicleObj ? vehicleObj.type : "-"}/></Typography>  
         </Grid>
         <Grid item xs={10}>
         <FirstPage vehicleObj={vehicleObj} handleDelete={handleDelete} handleAdd={handleAdd}/>

@@ -28,6 +28,11 @@
   color: #61dafb;
 }
 
+.content-editable:focus {
+  background: #fcf8e1;
+  outline: 0;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

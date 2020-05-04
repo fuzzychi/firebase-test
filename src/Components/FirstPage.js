@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import ContentEditable from 'react-contenteditable'
 
 function FirstPage({vehicleObj, handleDelete,handleAdd})
 {
@@ -13,7 +14,9 @@ function FirstPage({vehicleObj, handleDelete,handleAdd})
         {vehicleObj ? vehicleObj.options.map((option,index) => {
         return (
               <Paper style={{padding:10}}>
-              <Typography variant="h5">{option.partno} - {option.description}</Typography>
+              <Typography variant="h7"><ContentEditable className="content-editable" html={option.partno}/></Typography>
+              <Typography variant="h5"><ContentEditable className="content-editable" html={option.description}/></Typography>
+
               <Button onClick={()=>handleDelete(index)}>Delete</Button>             
               </Paper>
         )
