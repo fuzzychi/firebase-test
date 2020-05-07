@@ -105,7 +105,6 @@ function App() {
      const newOptions = options.filter((item,index)=>{
           if(index !== props){return item}
      })
-     console.log(newOptions);
      db.collection("vehicles").doc(vehicle).set({options:newOptions},{merge:true}).then(console.log("Done"))
 
   }
@@ -122,14 +121,33 @@ function App() {
     setVehicleObj("");
     }
   }
+  const handleEdit = (event,updateIndex) =>
+  {
+     const options = vehicleObj.options.filter((item,index)=>{
+          if(index === updateIndex){
+            item.description = event.target.value
+             return item;
+          }
+          else
+          {
+            return item;
+          }
+     })
+     setVehicleObj(function(prevState){
+       return {
+         ...prevState, options
+       }
+     });
+     db.collection("vehicles").doc(vehicle).set({options:options},{merge:true}).then(console.log("Updated"))
+  }
 
   return (
     <div className={classes.root}>
+      <Typography variant="h3" style={{padding:10}}>Configuration</Typography>
       <Grid container spacing={2}>
-      <Grid item xs={12} style={{backgroundColor:'yellow',color:'black'}}>
-          <Typography variant="h1">{vehicleObj ? vehicleObj.unitno : "-"}</Typography>
-          <InputLabel id="demo-simple-select-label">Vehicle</InputLabel>
+      <Grid item xs={2} style={{backgroundColor:'yellow',color:'black'}}>
           <Select
+          style={{fontSize:30}}
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={vehicle}
@@ -139,16 +157,25 @@ function App() {
             <MenuItem value={vehicle.id}>{vehicle.unit}</MenuItem>
           )})}
         </Select>
+        <Typography variant="h6"></Typography>
+        </Grid>
+        <Grid item xs={8} style={{backgroundColor:'yellow',color:'black'}}>
+        <Grid container spacing={2}>
+        <Grid item xs={4}><Typography variant="h4">Sales: </Typography><Typography variant="h8">{vehicleObj ? vehicleObj.sales : ""}</Typography></Grid>
+        <Grid item xs={4}><Typography variant="h4">Engineer: </Typography><Typography variant="h8">{vehicleObj ? vehicleObj.engineer : ""}</Typography></Grid>
+        <Grid item xs={4}><Typography variant="h4">Type: </Typography><Typography variant="h8">{vehicleObj ? vehicleObj.type : ""}</Typography></Grid> 
+        </Grid>  
+       </Grid>
+       <Grid item xs={2} style={{backgroundColor:'yellow',color:'black'}}></Grid>
+        <Grid item xs={2} style={{backgroundColor:'#eeee', height:"1000px"}}>
         <Button onClick={handleNew} style={{ display: 'inline', padding: 10, marginTop: 10 }}>New Vehicle</Button>
         <Button onClick={handleDeleteVeh} style={{ display: 'inline', padding: 10, marginTop: 10 }}>Delete Vehicle</Button>
         </Grid>
-        <Grid item xs={2} style={{backgroundColor:'#eeee', height:"1000px"}}> 
-          <Typography variant="h5"><ContentEditable className="content-editable" html={vehicleObj ? vehicleObj.sales : "-"}/></Typography>  
-          <Typography variant="h5"><ContentEditable className="content-editable" html={vehicleObj ? vehicleObj.engineer : "-"}/></Typography>  
-          <Typography variant="h5"><ContentEditable className="content-editable" html={vehicleObj ? vehicleObj.type : "-"}/></Typography>  
+        <Grid item xs={8}>
+        <FirstPage vehicleObj={vehicleObj} handleDelete={handleDelete} handleAdd={handleAdd} handleEdit={handleEdit}/>
         </Grid>
-        <Grid item xs={10}>
-        <FirstPage vehicleObj={vehicleObj} handleDelete={handleDelete} handleAdd={handleAdd}/>
+        <Grid item xs={2}>
+        Additional
         </Grid>
     </Grid>
     </div>  
